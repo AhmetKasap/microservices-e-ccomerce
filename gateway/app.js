@@ -29,6 +29,9 @@ app.use(`${gatewayPath}/product`, checkToken, productProxy)
 const authProxy = require('./services/auth')
 app.use(`${gatewayPath}/auth/*`, authProxy)
 
+const userProxy = require('./services/user')
+app.use(`${gatewayPath}/auth/*`, userProxy)
+
 
 //! Errorhandler
 const errorHandler = require('./Exceptions/errorHandler')
