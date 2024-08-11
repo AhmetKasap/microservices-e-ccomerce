@@ -54,7 +54,7 @@ services:
       - order_rabbitmq_data:/var/lib/rabbitmq
   
   product_postgres:
-    image: postgres:latest
+    image: postgres
     container_name: prdocut-db
     env_file:
       - .env
@@ -64,7 +64,7 @@ services:
       - product_postgres_data:/postgresql/data
   
   order_postgres:
-    image: postgres:latest
+    image: postgres
     container_name: order-db
     env_file:
       - .env
@@ -74,7 +74,7 @@ services:
       - order_postgres_data:/postgresql/data
   
   payment_postgres:
-    image: postgres:latest
+    image: postgres
     container_name: payment-db
     env_file:
       - .env

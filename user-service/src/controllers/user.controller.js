@@ -6,23 +6,32 @@ const userModel = require('../models/user.model')
 
 //* USER PROFILE 
 
+
+const createProfile = async(req,res) => {
+    
+
+}
+
+
+
+
 const getProfile = async (req,res) => {
     const user = await userModel.findById(req.params.id).select('name lastname email avatar location language school work about')
 
     if(!user) throw new APIError("not found user", 404)
     else return new Response(user, "user profile").ok(res)
-    
 }
 
 const editProfile = async(req,res) => {
-    const user = await userModel.findById(req.authUser._id) //check token
+    const userId = req.headers['user-id']
+
+    const user = await userModel.findById(userId) 
     const updateInfo = req.body
 
     if(!user) return new Response('you are not authorized for this operation')
     
     const updatedProfile = await userModel.findByIdAndUpdate(user._id, updateInfo , { new: true }).select('name lastname email avatar location language school work about')
     return new Response(updatedProfile,'updated user profile information').ok(res)
-
 }
 
 const getAvatar = async (req,res) => {
@@ -37,8 +46,9 @@ const getAvatar = async (req,res) => {
 
 const updateAvatar = async (req,res) => {
     console.log(req.body.avatar)
+    const userId = req.headers['user-id']
     
-    const user = await userModel.findById(req.authUser._id)
+    const user = await userModel.findById(userId)
     if (!user) return new Response(null, 'user not found').notfound(res)
 
     upload.avatar(req,res, async function(err) {
@@ -56,62 +66,6 @@ const updateAvatar = async (req,res) => {
 
 }
 
-
-
-//* USER FAVORITES
-const getFavorites = async(req,res) => {
-    const user = await userModel.findById(req.authUser._id)
-    if (!user) return new Response(null, 'user not found').notfound(res)
-
-    const favorites = await userModel.findById(user._id).select('favorites')  //* favorite control
-    console.log(favorites)
-    if(favorites.favorites.length === 0 ) return new Response(null, 'users favorites list is empty').badRequest(res)
-
-    const host = await hostModel.find( {_id : {$in : favorites.favorites}} ).select('location hostType numberOfGuests price images') //* list favorites
-    return new Response(host, 'users favorites').ok(res)
-}
-
-const addFavorites = async(req,res) => {
-    const user = await userModel.findById(req.authUser._id)
-    if (!user) return new Response(null, 'user not found').notfound(res)
-
-    const hostId = req.params.id //* host id
-
-    const host = await hostModel.findOne({_id : hostId}) //* host control
-    if(!host) return new Response(null, 'host not found').notfound(res)
-
-    let hostControl = await userModel.findById(user._id).select('favorites') //* daha önce favorilere eklenmiş ise tekrar ekleme
-    hostControl = hostControl.favorites
-    if(hostControl.includes(host._id)) throw new APIError('a place already added to favorites.', 400)
-    
-    user.favorites.push(host._id) //* favorilere ekle.
-    await user.save()
-    .then(data => {
-        return new Response(null, 'added favorites').ok(res)
-    }).catch(err => {
-        throw new APIError('error! an error occurred while adding to favorites', 500)
-    })
-}
-
-const deleteFavorites = async(req,res) => {
-    const user = await userModel.findById(req.authUser._id)
-    if (!user) return new Response(null, 'user not found').notfound(res)
-
-    let favorites = await userModel.findById(user._id).select('favorites')
-    favorites = favorites.favorites
-    if(favorites.length === 0) throw new APIError('favorite place not found to delete', 404)
-
-    const hostId = req.params.id //* silinecek mekanı çıkartarak yeni dizi oluşturduk
-   
-    const newFavorites = favorites.filter(data => data.toString() !== hostId)
-    console.log('newFavoritessssssssssss', newFavorites)
-
-    user.favorites = newFavorites //* favorites'i yeni diziyle güncelledik.
-    await user.save()
-    .then(data => {return new Response(null, 'deletion successfull').ok(res)})
-    .catch(err => {throw new APIError('error occurred during deletion', 500)})
-
-}
 
 
 const uploadAvatar = async(req,res) => {
@@ -152,7 +106,4 @@ module.exports = {
     editProfile,
     getAvatar,
     updateAvatar,
-    getFavorites,
-    addFavorites,
-    deleteFavorites
 }
