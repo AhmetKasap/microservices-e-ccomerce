@@ -4,10 +4,23 @@ const APIError = require("../utils/Error")
 const Response = require("../utils/Response")
 const userModel = require('../models/user.model')
 
-//* USER PROFILE 
 
+const createUser = async(userFromQueue) => {
+    
+    const user = JSON.parse(userFromQueue)
 
-const createProfile = async(req,res) => {
+    if(!user) throw new APIError('failed to retrieve user data from queue', 500)
+    
+    const saveUser = new userModel({
+        _id : user._id,
+        name : user.name,
+        lastname : user.lastname,
+        email : user.email,
+        password : user.password
+    })
+    const result = await saveUser.save()
+    if(result) console.log("user created")
+    
     
 
 }
@@ -100,6 +113,7 @@ const uploadImages = async(req,res) => {
 
 
 module.exports = {
+    createUser,
     uploadAvatar,
     uploadImages,
     getProfile,

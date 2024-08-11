@@ -23,7 +23,7 @@ services:
     image: mongo
     container_name: mongo-auth-db
     ports:
-      - "27017:27017"
+      - "27019:27017"
     volumes:
       - auth_mongo_data:/data/db
 

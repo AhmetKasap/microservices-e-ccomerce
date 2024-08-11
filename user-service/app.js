@@ -12,7 +12,6 @@ const mongoSanitize = require('express-mongo-sanitize')
 app.use(mongoSanitize())
 
 
-
 //! Cors Options
 const cors = require('cors')
 const corsOptions = require('./src/middlewares/lib/cors')
@@ -25,11 +24,15 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json()) 
 
 
-
-
 //! Routes and ErrorHandler
 const routes = require('./src/routes/index.routes')
 app.use(`/${process.env.NAME}/${process.env.VERSION}`, routes)
+
+
+//! RabbitMQ QUEUE
+const {consumeUserQueue} = require('./src/event-driven/RabbitMQ/userQueue')
+consumeUserQueue()
+
 
 
 app.use((req,res, next) => {
