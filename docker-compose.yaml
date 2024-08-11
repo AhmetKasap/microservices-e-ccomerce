@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  auth_redis:
+    image: redis
+    container_name: redis-auth-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - auth_redis_data:/data
+    command: redis-server --port 6379
+  
+  basket_redis:
+    image: redis
+    container_name: redis-basket
+    ports:
+      - "6380:6379"
+    volumes:
+      - basket_redis_data:/data
+    command: redis-server --port 6380
+
+  auth_mongo:
+    image: mongo
+    container_name: mongo-auth-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - auth_mongo_data:/data/db
+
+  user_mongo:
+    image: mongo
+    container_name: mongo-user-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - user_mongo_db:/data/db
+  
+  user_rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq-user
+    ports:
+      - "5672:5672"   # RabbitMQ default AMQP port
+      - "15672:15672" # RabbitMQ management console port
+    volumes:
+      - user_rabbitmq_data:/var/lib/rabbitmq
+
+  order_rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq-order
+    ports:
+      - "5673:5672"   # RabbitMQ default AMQP port
+      - "15673:15672" # RabbitMQ management console port
+    volumes:
+      - order_rabbitmq_data:/var/lib/rabbitmq
+  
+  product_postgres:
+    image: postgres:latest
+    container_name: prdocut-db
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - product_postgres_data:/postgresql/data
+  
+  order_postgres:
+    image: postgres:latest
+    container_name: order-db
+    env_file:
+      - .env
+    ports:
+      - '5433:5432'
+    volumes:
+      - order_postgres_data:/postgresql/data
+  
+  payment_postgres:
+    image: postgres:latest
+    container_name: payment-db
+    env_file:
+      - .env
+    ports:
+      - '5434:5432'
+    volumes:
+      - payment_postgres_data:/postgresql/data
+
+
+volumes:
+  auth_redis_data:
+  basket_redis_data:
+  auth_mongo_data:
+  user_mongo_db:
+  user_rabbitmq_data:
+  order_rabbitmq_data:
+  product_postgres_data:
+  order_postgres_data:
+  payment_postgres_data:
+ 
