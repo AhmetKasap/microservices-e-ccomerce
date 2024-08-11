@@ -1,14 +1,16 @@
 const amqp = require('amqplib')
-const APIError = require('../../utils/Error')
+
 require('dotenv').config()
 
 const rabbitmqConnection = require('./RabbitMQ.connection')
 
 const addUserToQueue = async (user) => {
-    const chanel = await rabbitmqConnection().createChannel()
-    await chanel.assertQueeu('userInfoQueue')
+    const connection = await rabbitmqConnection()
+    const chanel = await connection.createChannel()
+    await chanel.assertQueue('userInfoQueue')
     
-    await chanel.sendToQueue('userInfoQueue', Buffer.from(JSON.stringify(user)))
+    const success = chanel.sendToQueue('userInfoQueue', Buffer.from(JSON.stringify(user)))
+    if(success === true) console.log("user sent to queue")
 }
 
 module.exports = {

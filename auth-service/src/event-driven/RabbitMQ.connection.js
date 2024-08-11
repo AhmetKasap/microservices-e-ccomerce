@@ -1,5 +1,5 @@
 const amqp = require('amqplib')
-const APIError = require('../../utils/Error')
+const APIError = require('../utils/Error')
 require('dotenv').config()
 
 const rabbitmqConnection = async () => {
