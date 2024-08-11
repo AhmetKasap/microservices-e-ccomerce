@@ -21,8 +21,6 @@ const createUser = async(userFromQueue) => {
     const result = await saveUser.save()
     if(result) console.log("user created")
     
-    
-
 }
 
 
@@ -34,6 +32,7 @@ const getProfile = async (req,res) => {
     if(!user) throw new APIError("not found user", 404)
     else return new Response(user, "user profile").ok(res)
 }
+
 
 const editProfile = async(req,res) => {
     const userId = req.headers['user-id']
@@ -58,7 +57,6 @@ const getAvatar = async (req,res) => {
 }
 
 const updateAvatar = async (req,res) => {
-    console.log(req.body.avatar)
     const userId = req.headers['user-id']
     
     const user = await userModel.findById(userId)

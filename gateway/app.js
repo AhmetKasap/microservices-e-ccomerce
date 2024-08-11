@@ -30,7 +30,7 @@ const authProxy = require('./services/auth')
 app.use(`${gatewayPath}/auth/*`, authProxy)
 
 const userProxy = require('./services/user')
-app.use(`${gatewayPath}/auth/*`, userProxy)
+app.use(`${gatewayPath}/users/*`, checkToken, userProxy)
 
 
 //! Errorhandler

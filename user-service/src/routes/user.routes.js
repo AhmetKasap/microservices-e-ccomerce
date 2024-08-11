@@ -13,12 +13,13 @@ const {
 
 } = require('../controllers/user.controller')
 
+router.put('/',  editProfile)
+router.put('/avatar',  updateAvatar)
+
 
 router.get('/:id', getProfile)
 router.get('/avatar/:id', getAvatar)
 
-router.put('/',  editProfile)
-router.put('/avatar',  updateAvatar)
 
 
 //router.post('/avatar', uploadAvatar)

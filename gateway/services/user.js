@@ -6,7 +6,7 @@ const userProxy = createProxyMiddleware({
     pathRewrite: (path, req) => {
         const originalPath = req.originalUrl
         const dynamicPart = originalPath.replace('/api-gateway/v1/users/', '')
-        return `/api/v1/auth/${dynamicPart}`
+        return `/api/v1/users/${dynamicPart}`
     },
     on: {
         proxyReq: (proxyReq, req, res) => {
