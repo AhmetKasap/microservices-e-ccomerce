@@ -15,17 +15,13 @@ const {
 
 
 router.get('/:id', getProfile)
-router.put('/',  editProfile)
-
 router.get('/avatar/:id', getAvatar)
+
+router.put('/',  editProfile)
 router.put('/avatar',  updateAvatar)
 
 
-
-router.post('/avatar', uploadAvatar)
-router.post('/images', uploadImages)
-
-
-
+//router.post('/avatar', uploadAvatar)
+//router.post('/images', uploadImages)
 
 module.exports = router

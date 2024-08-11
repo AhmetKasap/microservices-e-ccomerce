@@ -4,7 +4,7 @@ const Response = require('../utils/Response')
 const bcrypt = require('bcrypt')
 const authMiddlewares = require('../middlewares/auth.middlewares')
 const cache = require('../cache/Redis/auth.cache')
-
+const {addUserToQueue} = require('../event-driven/userQueue')
 
 const registerController = async(req,res) => {
   
@@ -22,7 +22,12 @@ const registerController = async(req,res) => {
 
     const user = await userDb.save()
     if(user) {
-        await cache.addCache(user._id) //!added cache
+        //!redis cache
+        await cache.addCache(user._id)
+
+        //! rabbitmq queue
+        addUserToQueue(user)
+
         return new Response(null, 'registration created successfully').created(res)
     }
     else throw new APIError('An error occurred during registration', 500)
