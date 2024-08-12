@@ -2,7 +2,6 @@ package com.microservices.dto;
 
 
 import com.microservices.model.ProductEntity;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class ProductDTO {
@@ -11,7 +10,10 @@ public class ProductDTO {
 
     public String productDescription;
 
+    @NotNull(message = "product price cannot be null")
     public int productPrice;
+
+    public String photoUrl;
 
     public ProductEntity toEntity() {
         ProductEntity entity = new ProductEntity();
