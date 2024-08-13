@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -22,13 +24,8 @@ public class ProductService {
 
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        // ProductDTO'yu ProductEntity'ye dönüştür
         ProductEntity productEntity = productDTO.toEntity();
-
-        // ProductEntity'yi veritabanına kaydet
         ProductEntity savedEntity = productRepository.save(productEntity);
-
-        // Kaydedilen entity'yi tekrar DTO'ya dönüştür
         return savedEntity.toDTO();
     }
 
@@ -49,11 +46,38 @@ public class ProductService {
             return false;
         }
     }
-
-
     private String extractPhotoKeyFromUrl(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
     }
+
+
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(productEntity -> productEntity.toDTO())
+                .collect(Collectors.toList());
+    }
+
+    public ProductDTO getProductById(UUID id) {
+        Optional<ProductEntity> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            return optionalProduct.get().toDTO();
+        }else{
+            return null;
+        }
+
+    }
+
+    public List<ProductDTO> getAllProductByUserId(UUID userId) {
+        return productRepository.findByUserId(userId)
+                .stream()
+                .map(productEntity -> productEntity.toDTO())
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
 
 

@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductDTO {
     private UUID userId;
+    private UUID productId;
 
     @NotNull(message = "product name cannot be null")
     private String productName;

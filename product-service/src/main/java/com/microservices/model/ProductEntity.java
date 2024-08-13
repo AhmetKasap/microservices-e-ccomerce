@@ -26,6 +26,7 @@ public class ProductEntity {
 
     public ProductDTO toDTO() {
         ProductDTO dto = new ProductDTO();
+        dto.setProductId(this.id);
         dto.setUserId(this.userId);
         dto.setProductName(this.productName);
         dto.setProductDescription(this.productDescription);

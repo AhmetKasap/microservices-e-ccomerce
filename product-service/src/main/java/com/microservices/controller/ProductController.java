@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -68,6 +69,32 @@ public class ProductController {
 
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> productDTOs = productService.getAllProducts();
+        return new ResponseEntity<>(productDTOs, HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") UUID id) {
+        ProductDTO productDTO = productService.getProductById(id);
+        if(productDTO != null) {
+            return new ResponseEntity<>(productDTO, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<List<ProductDTO>> getAllProductByUserId(@PathVariable("id") UUID userId) {
+        List<ProductDTO> products = productService.getAllProductByUserId(userId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
 
 
     /*
@@ -78,41 +105,11 @@ public class ProductController {
 
     }
 
-    @GetMapping("/")
-    public ResponseEntity<ProductDTO> getAllProducts() {
-
-    }
-
-    @GetMapping("/:id")
-    public ResponseEntity<ProductDTO> getProductById() {
-
-    }
-
-    //userId lazım bodyden alacan ha dikkat
-    @GetMapping("/users/:id")
-    public ResponseEntity<ProductDTO> getAllProductByUserId(@RequestParam("id") Long id) {
-
-    }
-
 
     * */
 
 
     //popüler ürünler, kategoriye göre ürünler, query ile üreünler, search vs.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
