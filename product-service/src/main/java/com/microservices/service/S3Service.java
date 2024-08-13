@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -22,12 +23,36 @@ public class S3Service {
         this.s3client = s3client;
     }
 
+
     public void uploadFile(String keyName, MultipartFile file) throws IOException {
+        //String uniqueFileName = UUID.randomUUID().toString() + "_" + keyName;
         var putObjectResult = s3client.putObject(bucketName, keyName, file.getInputStream(), null);
         log.info(putObjectResult.getMetadata());
     }
 
-    public S3Object getFile(String keyName) {
-        return s3client.getObject(bucketName, keyName);
+    public String getFileUrl(String keyName) {
+        return s3client.getUrl(bucketName, keyName).toString();
     }
+
+
+
+    public void updateFile(String keyName, MultipartFile newFile) throws IOException {
+        var result = deleteFile(keyName);
+        if(result == true) {
+            uploadFile(keyName, newFile);
+        }
+    }
+
+    public boolean deleteFile(String keyName) {
+        try {
+            s3client.deleteObject(bucketName, keyName);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+
+
 }

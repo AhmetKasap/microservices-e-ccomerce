@@ -1,27 +1,34 @@
 package com.microservices.dto;
 
-
 import com.microservices.model.ProductEntity;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
+@Data
+@NoArgsConstructor
 public class ProductDTO {
-    @NotNull(message = "product name cannot be null")
-    public String productName;
+    private UUID userId;
 
-    public String productDescription;
+    @NotNull(message = "product name cannot be null")
+    private String productName;
+
+    private String productDescription;
 
     @NotNull(message = "product price cannot be null")
-    public int productPrice;
+    private double productPrice;
 
-    public String photoUrl;
+    private String productUrl;
 
     public ProductEntity toEntity() {
         ProductEntity entity = new ProductEntity();
+        entity.userId = this.userId;
         entity.productName = this.productName;
         entity.productDescription = this.productDescription;
         entity.productPrice = this.productPrice;
+        entity.productUrl = this.productUrl;
         return entity;
     }
-
-
 }

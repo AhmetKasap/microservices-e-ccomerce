@@ -23,14 +23,18 @@ const corsOptions = require('./security/cors')
 //!SERVICES
 const gatewayPath="/api-gateway/v1"
 
-const productProxy = require('./services/product')
-app.use(`${gatewayPath}/product`, checkToken, productProxy)
-
 const authProxy = require('./services/auth')
 app.use(`${gatewayPath}/auth/*`, authProxy)
 
 const userProxy = require('./services/user')
 app.use(`${gatewayPath}/users/*`, checkToken, userProxy)
+
+const productProxy = require('./services/product')
+app.use(`${gatewayPath}/products*`, checkToken, productProxy)
+
+
+
+
 
 
 //! Errorhandler
