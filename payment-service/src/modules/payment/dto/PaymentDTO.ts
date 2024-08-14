@@ -1,6 +1,10 @@
 import { IsEmail, IsNotEmpty, Length } from "class-validator"
+import { UUID } from "crypto"
 
-export class PaymentDTO{
+export class PaymentDTO{    
+
+    userId : UUID
+
     @IsNotEmpty()
     @Length(3,50) 
     cardName : string

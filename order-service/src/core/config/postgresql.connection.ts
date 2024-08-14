@@ -5,7 +5,7 @@ import { PaymentEntity } from "src/modules/payment/model/PaymentEntity"
 export const postgreDBConnection = TypeOrmModule.forRoot({
   type: 'postgres',
   host: 'localhost',
-  port: 5434,
+  port: 5433,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
