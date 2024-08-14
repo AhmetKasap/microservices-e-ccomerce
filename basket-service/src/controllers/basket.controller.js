@@ -2,6 +2,7 @@ const APIError = require('../utils/Error')
 const Response = require('../utils/Response')
 const {addProductBasket, getBasket, deleteProductBasket} = require('../model/basket.redis')
 const {getProduct} = require('../getProducts/get.products')
+const {addBasketToQueue} = require('../event-driven/basketQueue')
 
 
 const addProductToBasket = async(req,res) => {
@@ -52,8 +53,22 @@ const deleteProductToBasket = async(req,res) => {
 }
 
 const confirimBasket = async(req,res) => {
+    //const userId = await req.headers['user-id']
+    const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
 
+    if(!userId) throw new APIError('user not found', 404)
+
+    const basket = await getBasket(userId)
+    if(basket === false) return new Response(null, 'your basket is empty, you can add products').badRequest(res)
+    
+    const result = await addBasketToQueue(basket)
+    if(result === true) return new Response(null, "you are redirected to the payment page").ok(res)
+    else throw new APIError('an error occurred, data could not be written to the queue', 500)
+    
 }
+
+
+
 
 
 const calculateTotalPrice = (basket) => {
@@ -69,5 +84,5 @@ const calculateTotalPrice = (basket) => {
 
 
 module.exports = {
-    addProductToBasket, getBasketByUserId,deleteProductToBasket
+    addProductToBasket, getBasketByUserId,deleteProductToBasket,confirimBasket
 }
