@@ -1,4 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { PaymentRepository } from './payment.repository';
 
 @Injectable()
-export class PaymentService {}
+export class PaymentService {
+    constructor(private readonly paymentRepository : PaymentRepository) {}
+
+
+    async createPayment () {
+        
+    }
+
+
+}

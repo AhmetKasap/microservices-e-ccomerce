@@ -60,8 +60,16 @@ const confirimBasket = async(req,res) => {
 
     const basket = await getBasket(userId)
     if(basket === false) return new Response(null, 'your basket is empty, you can add products').badRequest(res)
+    const totalPrice = calculateTotalPrice(basket)
     
-    const result = await addBasketToQueue(userId,basket)
+    const basketByUserId = {
+        userId,
+        basket,
+        totalPrice
+    }
+    console.log(basketByUserId)
+    
+    const result = await addBasketToQueue(basketByUserId)
     if(result === true) return new Response(null, "you are redirected to the payment page").ok(res)
     else throw new APIError('an error occurred, data could not be written to the queue', 500)
     
