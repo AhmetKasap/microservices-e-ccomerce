@@ -88,7 +88,6 @@ public class ProductController {
     }
 
 
-
     @GetMapping("/users/{id}")
     public ResponseEntity<List<ProductDTO>> getAllProductByUserId(@PathVariable("id") UUID userId) {
         List<ProductDTO> products = productService.getAllProductByUserId(userId);

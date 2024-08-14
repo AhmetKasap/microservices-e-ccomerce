@@ -4,16 +4,13 @@ const app = express()
 require('dotenv').config()
 
 
-//! Cors Options
-const cors = require('cors')
-const corsOptions = require('./src/middlewares/lib/cors')
-app.use(cors(corsOptions))
 
 
 //! Body-parser
 const bodyParser = require('body-parser')    
 app.use(bodyParser.urlencoded({extended:false}))  
 app.use(bodyParser.json()) 
+
 
 
 //! Routes and ErrorHandler
