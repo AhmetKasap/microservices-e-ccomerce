@@ -1,6 +1,6 @@
 import { TypeOrmModule } from "@nestjs/typeorm"
 import 'dotenv/config'
-import { PaymentEntity } from "src/modules/payment/model/PaymentEntity"
+import { OrderEntity } from "src/modules/order/entities/order.entity"
 
 export const postgreDBConnection = TypeOrmModule.forRoot({
   type: 'postgres',
@@ -9,6 +9,6 @@ export const postgreDBConnection = TypeOrmModule.forRoot({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: [PaymentEntity],
+  entities: [OrderEntity],
   synchronize: true,}
 )

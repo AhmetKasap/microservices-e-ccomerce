@@ -3,8 +3,8 @@ import * as amqp from 'amqplib';
 
 @Injectable()
 export class RabbitMQService {
-    private connection: amqp.Connection;
-    private channel: amqp.Channel;
+    private connection: amqp.Connection
+    private channel: amqp.Channel
 
     async connect() {
         if (!this.connection || !this.channel) {
@@ -19,21 +19,30 @@ export class RabbitMQService {
 
         return new Promise((resolve, reject) => {
             this.channel.consume('basketQueue', (response) => {
-                const data = JSON.parse(response.content.toString());
+                const data = JSON.parse(response.content.toString())
                 if (data.userId === userId) {
-                    this.channel.ack(response);
-                    resolve(data); // Veriyi geri döndür
+                    this.channel.ack(response)
+                    resolve(data);
+                    this.disconnect()
                 }
             }, { noAck: false });
         });
-        
-        
-        
     }
-    
 
     async addOrderQueue(basket: any): Promise<boolean> {
+        await this.connect();  
         await this.channel.assertQueue('orderQueue');
-        return this.channel.sendToQueue('orderQueue', Buffer.from(JSON.stringify({ basket })));
+        return this.channel.sendToQueue('orderQueue', Buffer.from(JSON.stringify({ basket })))
+    }
+
+    async disconnect() {
+        if (this.channel) {
+            await this.channel.close()
+            this.channel = null
+        }
+        if (this.connection) {
+            await this.connection.close()
+            this.connection = null
+        }
     }
 }
