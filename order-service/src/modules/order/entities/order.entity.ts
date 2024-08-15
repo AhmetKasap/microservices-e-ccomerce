@@ -9,8 +9,8 @@ export class OrderEntity {
     @Column()
     userId : UUID
 
-    @Column()
-    orderProducts : string
+    @Column("json")    
+    orderProducts : any
 
 
 
