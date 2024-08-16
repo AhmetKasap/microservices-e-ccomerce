@@ -24,16 +24,18 @@ const corsOptions = require('./security/cors')
 const gatewayPath="/api-gateway/v1"
 
 const authProxy = require('./services/auth')
-app.use(`${gatewayPath}/auth/*`, authProxy)
-
 const userProxy = require('./services/user')
-app.use(`${gatewayPath}/users/*`, checkToken, userProxy)
-
 const productProxy = require('./services/product')
+const basketProxy = require('./services/basket')
+const paymentProxy = require('./services/payment')
+const orderProxy = require('./services/order')
+
+app.use(`${gatewayPath}/auth/*`, authProxy)
+app.use(`${gatewayPath}/users/*`, checkToken, userProxy)
 app.use(`${gatewayPath}/products*`, checkToken, productProxy)
-
-
-
+app.use(`${basketProxy}/baskets*`, checkToken, basketProxy)
+app.use(`${basketProxy}/payments*`, checkToken, paymentProxy)
+app.use(`${basketProxy}/orders*`, checkToken, orderProxy)
 
 
 

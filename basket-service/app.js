@@ -28,5 +28,5 @@ app.use(errorHandler)
 
 
 app.listen(process.env.PORT || 5004, () => {
-    console.log(`Server is Running on port ${process.env.PORT || 5010}`)
+    console.log(`Server is Running on port ${process.env.PORT || 5004}`)
 })
