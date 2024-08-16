@@ -6,9 +6,8 @@ const productProxy = createProxyMiddleware({
     target: 'http://localhost:5003',
     changeOrigin: true,
     pathRewrite: (path, req) => {
-      const originalPath = req.originalUrl
-      const dynamicPart = originalPath.replace('/api-gateway/v1/products/', '')
-      return `/api/v1/users/${dynamicPart}`
+      const dynamicPart = path.replace('/api-gateway/v1/products/', '')
+      return `/api/v1/products/${dynamicPart}`
     },
     on: {
         proxyReq: (proxyReq, req, res) => {

@@ -33,9 +33,9 @@ const orderProxy = require('./services/order')
 app.use(`${gatewayPath}/auth/*`, authProxy)
 app.use(`${gatewayPath}/users/*`, checkToken, userProxy)
 app.use(`${gatewayPath}/products*`, checkToken, productProxy)
-app.use(`${basketProxy}/baskets*`, checkToken, basketProxy)
-app.use(`${basketProxy}/payments*`, checkToken, paymentProxy)
-app.use(`${basketProxy}/orders*`, checkToken, orderProxy)
+app.use(`${gatewayPath}/baskets*`, checkToken, basketProxy)
+app.use(`${gatewayPath}/payments*`, checkToken, paymentProxy)
+app.use(`${gatewayPath}/orders*`, checkToken, orderProxy)
 
 
 

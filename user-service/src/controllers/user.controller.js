@@ -6,7 +6,6 @@ const userModel = require('../models/user.model')
 
 
 const createUser = async(userFromQueue) => {
-    
     const user = JSON.parse(userFromQueue)
 
     if(!user) throw new APIError('failed to retrieve user data from queue', 500)
@@ -22,8 +21,6 @@ const createUser = async(userFromQueue) => {
     if(result) console.log("user created")
     
 }
-
-
 
 
 const getProfile = async (req,res) => {
@@ -76,6 +73,13 @@ const updateAvatar = async (req,res) => {
     })
 
 }
+
+
+
+
+
+
+
 
 
 

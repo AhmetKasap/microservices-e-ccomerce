@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/products")
+@RequestMapping(path="/api/v1/products")
 public class ProductController {
 
     @Autowired
@@ -28,10 +28,11 @@ public class ProductController {
     }
 
     //@RequestHeader("user-id") UUID userId
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path="/",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductDTO> createProduct(@Valid @RequestPart("product") ProductDTO productDTO,
+                                                    @RequestHeader("user-id") UUID userId,
                                                     @RequestPart("file") MultipartFile file) throws IOException {
-        UUID userId = UUID.fromString("b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e");
+        //UUID userId = UUID.fromString("b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e");
         if(userId != null) {
             productDTO.setUserId(userId);
             String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
@@ -48,9 +49,9 @@ public class ProductController {
 
     //@RequestHeader("user-id") UUID userId
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable("id") UUID id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") UUID id, @RequestHeader("user-id") UUID userId) {
 
-        UUID userId = UUID.fromString("b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e");
+        //UUID userId = UUID.fromString("b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e");
         if(userId != null) {
             boolean result = productService.deleteProduct(id,userId);
 
@@ -64,7 +65,6 @@ public class ProductController {
             return new ResponseEntity<>("user not found", HttpStatus.NOT_FOUND);
         }
 
-
     }
 
     @GetMapping("/")
@@ -72,7 +72,6 @@ public class ProductController {
         List<ProductDTO> productDTOs = productService.getAllProducts();
         return new ResponseEntity<>(productDTOs, HttpStatus.OK);
     }
-
 
 
     @GetMapping("/{id}")

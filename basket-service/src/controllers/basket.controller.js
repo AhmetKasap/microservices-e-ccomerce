@@ -6,8 +6,8 @@ const {addBasketToQueue} = require('../event-driven/basketQueue')
 
 
 const addProductToBasket = async(req,res) => {
-    //const userId = await req.headers['user-id']
-    const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
+    const userId = await req.headers['user-id']
+    //const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
 
     if(!userId) throw new APIError('user not found', 404)
     
@@ -22,13 +22,14 @@ const addProductToBasket = async(req,res) => {
 }
 
 const getBasketByUserId = async(req,res) => {
-    //const userId = await req.headers['user-id']
-    const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
+    const userId = await req.headers['user-id']
+    //const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
 
     if(!userId) throw new APIError('user not found', 404)
 
     const basket = await getBasket(userId)
-    if(basket === false) return new Response(null, 'your basket is empty, you can add products')
+    console.log(basket)
+    if(basket === false) return new Response(null, 'your basket is empty, you can add products').notfound(res)
     
     const totalPrice = calculateTotalPrice(basket)
     const resultBasket = {
@@ -41,8 +42,8 @@ const getBasketByUserId = async(req,res) => {
 }
 
 const deleteProductToBasket = async(req,res) => {
-    //const userId = await req.headers['user-id']
-    const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
+    const userId = await req.headers['user-id']
+    //const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
     const productId = req.params.id
 
     if(!userId) throw new APIError('user not found', 404)
@@ -53,8 +54,8 @@ const deleteProductToBasket = async(req,res) => {
 }
 
 const confirimBasket = async(req,res) => {
-    //const userId = await req.headers['user-id']
-    const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
+    const userId = await req.headers['user-id']
+    //const userId = "b2a2d65b-0d28-4c88-9c77-8a4a731cfd1e"
 
     if(!userId) throw new APIError('user not found', 404)
 
