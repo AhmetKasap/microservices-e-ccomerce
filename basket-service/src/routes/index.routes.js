@@ -3,7 +3,7 @@ const router = express.Router()
 
 
 const basketRoutes = require('./basket.routes')
-router.use('/basket', basketRoutes)
+router.use('/baskets', basketRoutes)
 
 
 
